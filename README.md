@@ -1,6 +1,6 @@
-# ☀️ OpenSolar
+# ☀️ SolarNest
 
-**OpenSolar** is an open-source solar panel production and battery monitoring system built for Raspberry Pi, written in Go, with a React dashboard frontend.
+**SolarNest** is an open-source solar panel production and battery monitoring system built for Raspberry Pi, written in Go, with a React dashboard frontend.
 
 ## 🚀 Features
 - Real-time solar + battery monitoring
