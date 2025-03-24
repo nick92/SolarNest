@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/nick92/opensolar/sensors"
+	"github.com/nick92/solarnest/sensors"
 )
 
 var content embed.FS
