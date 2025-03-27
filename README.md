@@ -7,7 +7,7 @@
 - Lightweight Go backend
 - React-based local web dashboard
 - Runs fully offline
-- Designed for small solar setups, RVs, cabins, or homesteads
+- Designed for small solar setups, RVs / Caravans / Off-Grid 
 
 ## 🧰 Tech Stack
 - Backend: Go (Golang), Chi Router, embed.FS
