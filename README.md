@@ -10,7 +10,7 @@
 - Designed for small solar setups, RVs / Caravans / Off-Grid 
 
 ## 🧰 Tech Stack
-- Backend: Go (Golang), Chi Router, embed.FS
+- Backend: Go (Golang)
 - Frontend: React + Vite
 - Hardware: INA219, Victron VE.Direct (in progress)
 - Raspberry Pi ready (Zero W, 3, 4)
