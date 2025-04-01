@@ -13,7 +13,7 @@ type ApiOkResponse[T any] struct {
 	Timestamp time.Time `json:"timestamp"`
 }
 
-type ApiErrorResponse[T any] struct {
+type ApiErrorResponse struct {
 	Status       string    `json:"status"`
 	ErrorCode    int       `json:"code"`
 	ErrorMessage string    `json:"message"`
@@ -29,7 +29,7 @@ func StatusOkResponse[T any](c *gin.Context, data T) {
 }
 
 func StatusErrorResponse[T any](c *gin.Context, errorCode int, errorMessage string) {
-	c.JSON(http.StatusOK, ApiErrorResponse[T]{
+	c.JSON(http.StatusOK, ApiErrorResponse{
 		Status:       "error",
 		ErrorCode:    errorCode,
 		ErrorMessage: errorMessage,
