@@ -20,7 +20,7 @@ func loadConfig(filename string) (*Config, error) {
 
 func main() {
 	cfg, err := loadConfig("config.json")
-	ticker := time.NewTicker(5 * time.Minute)
+	ticker := time.NewTicker(time.Duration(cfg.IntervalMinutes) * time.Minute)
 	defer ticker.Stop()
 
 	if err != nil {
