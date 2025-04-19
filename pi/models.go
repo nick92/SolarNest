@@ -1,7 +1,8 @@
 package main
 
 type Config struct {
-	ServerURL       string `json:"server_url"`
+	MQTTServerURL   string `json:"mqtt_server_url"`
+	MQTTTopic       string `json:"mqtt_topic"`
 	ClientID        string `json:"client_id"`
 	SerialName      string `json:"serial_name"`
 	SerialBaud      int    `json:"serial_baud"`
