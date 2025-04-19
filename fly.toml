@@ -4,17 +4,30 @@
 #
 
 app = 'solarnest-summer-bush-1694'
-primary_region = 'ewr'
+primary_region = '1hr'
 
 [build]
 
-[http_service]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = 'stop'
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ['app']
+[[services]]
+  protocol     = "tcp"
+  internal_port = 8080     # your Gin HTTP server binds here
+
+  [[services.ports]]
+    port     = 80
+    handlers = ["http"]
+
+  [[services.ports]]
+    port     = 443
+    handlers = ["tls", "http"]
+
+[[services]]
+  internal_port = 1883
+  protcol = "tcp"
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 1883
+    handlers = [ ]
 
 [[vm]]
   memory = '1gb'

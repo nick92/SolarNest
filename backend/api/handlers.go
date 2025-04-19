@@ -1,8 +1,9 @@
 package api
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
-	"github.com/nick92/solarnest/sensors"
 	"github.com/nick92/solarnest/weather"
 )
 
@@ -12,8 +13,14 @@ func Ping(c *gin.Context) {
 	})
 }
 
-func GetStatus(c *gin.Context) {
-	status := sensors.GetStatus()
+func UpdateStatus(c *gin.Context) {
+	status := c.Request.Body
+
+	if err := c.ShouldBindJSON(&status); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	StatusOkResponse(c, status)
 }
 

@@ -1,6 +1,9 @@
 package sensors
 
-import "time"
+import (
+	"math/rand"
+	"time"
+)
 
 type SystemStatus struct {
 	SolarPowerW     float64   `json:"solar_power_w"`
@@ -11,10 +14,16 @@ type SystemStatus struct {
 }
 
 func GetStatus() SystemStatus {
+	rand.Seed(time.Now().UnixNano())
+
+	solarPowerW := rand.Float64()
+	batteryVoltageV := rand.Float64()
+	batterySOC := rand.Float64()
+
 	return SystemStatus{
-		SolarPowerW:     123.4,
-		BatteryVoltageV: 12.7,
-		BatterySOC:      78.9,
+		SolarPowerW:     solarPowerW,
+		BatteryVoltageV: batteryVoltageV,
+		BatterySOC:      batterySOC,
 		Charging:        true,
 		Timestamp:       time.Now(),
 	}

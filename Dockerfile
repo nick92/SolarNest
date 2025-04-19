@@ -17,6 +17,7 @@ RUN go build -o main .
 
 # Expose the port (make sure your app listens on 8080)
 EXPOSE 8080
+EXPOSE 1883
 
 # Run the binary
 CMD ["./main"]
