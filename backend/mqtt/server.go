@@ -8,9 +8,14 @@ import (
 	"github.com/mochi-mqtt/server/v2/hooks/auth"
 	"github.com/mochi-mqtt/server/v2/hooks/debug"
 	"github.com/mochi-mqtt/server/v2/listeners"
+	"gorm.io/gorm"
 )
 
-func StartServer() {
+type MQTT struct {
+	DB *gorm.DB
+}
+
+func (mqttMod *MQTT) StartServer() {
 	// Create a new MQTT broker instance.
 	server := mqttBroker.New(nil)
 
@@ -18,11 +23,6 @@ func StartServer() {
 	_ = server.AddHook(new(auth.AllowHook), nil)
 
 	server.AddHook(new(debug.Hook), nil)
-
-	// config := listeners.Config{
-	// 	Type:    "mqtt",
-	// 	Address: "0.0.0.0:1883",
-	// }
 
 	// Create a TCP listener on port 1883.
 	tcp := listeners.NewTCP(listeners.Config{
@@ -41,7 +41,7 @@ func StartServer() {
 	}
 }
 
-func StartSubscriber() {
+func (mqttMod *MQTT) StartSubscriber() {
 	// Set up the MQTT client options to connect to our broker.
 	opts := mqtt.NewClientOptions().
 		AddBroker("tcp://0.0.0.0:1883")
@@ -55,9 +55,7 @@ func StartSubscriber() {
 
 	// Subscribe to the "vedirect/data" topic.
 	topic := "vedirect/data"
-	if token := client.Subscribe(topic, 0, func(client mqtt.Client, msg mqtt.Message) {
-		log.Printf("Received message on topic %s: %s", msg.Topic(), string(msg.Payload()))
-	}); token.Wait() && token.Error() != nil {
+	if token := client.Subscribe(topic, 0, mqttMod.HandleSubscription); token.Wait() && token.Error() != nil {
 		log.Fatalf("Error subscribing: %v", token.Error())
 	} else {
 		log.Println("Subscription to 'vedirect/data' successful.")

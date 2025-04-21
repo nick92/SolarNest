@@ -34,6 +34,39 @@ func loadConfig() (*Config, error) {
 	return &cfg, err
 }
 
+func getDeviceID() string {
+	// get the model name (e.g. "Raspberry Pi Zero 2 W Rev 1.0")
+	model := "unknown"
+	if data, err := os.ReadFile("/proc/device-tree/model"); err == nil {
+		model = strings.TrimSpace(string(data))
+	}
+
+	// slugify the model
+	modelSlug := strings.ToLower(model)
+	modelSlug = strings.ReplaceAll(modelSlug, "raspberry pi", "pi")
+	modelSlug = strings.ReplaceAll(modelSlug, " ", "-")
+	modelSlug = strings.Trim(modelSlug, "-")
+	modelSlug = strings.Trim(modelSlug, "\x00\n\r\t")
+
+	// get CPU serial number for unique id
+	serial := "unknown"
+	if data, err := os.ReadFile("/proc/cpuinfo"); err == nil {
+		lines := strings.Split(string(data), "\n")
+		for _, line := range lines {
+			if strings.HasPrefix(line, "Serial") {
+				parts := strings.Fields(line)
+				if len(parts) > 2 {
+					serial = parts[2]
+					break
+				}
+			}
+		}
+	}
+
+	// combine string for device ID
+	return fmt.Sprintf("%s-%s", modelSlug, serial)
+}
+
 func sendATCommand(port *serial.Port, cmd string, wait time.Duration) (string, error) {
 	log.Println("Sending AT Command: " + cmd)
 
@@ -146,9 +179,16 @@ func generateRandomPayload() string {
 
 	voltage := 11.0 + rand.Float64()*2.0 // 11.0V – 13.0V
 	current := 0.0 + rand.Float64()*10.0 // 0A – 10A
+	deviceID := getDeviceID()
 
-	payload := fmt.Sprintf(`{"voltage":%.2f,"current":%.2f}`, voltage, current)
-	return payload
+	payloadObj := map[string]interface{}{
+		"device_id": deviceID,
+		"voltage":   voltage,
+		"current":   current,
+	}
+	payloadBytes, _ := json.Marshal(payloadObj)
+
+	return string(payloadBytes)
 }
 
 func sendReading(port *serial.Port, cfg *Config) {

@@ -6,25 +6,32 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nick92/solarnest/api"
+	"github.com/nick92/solarnest/db"
 	"github.com/nick92/solarnest/mqtt"
+	"gorm.io/gorm"
 )
 
 func main() {
-	go initGinServer()
-	initMQTTServer()
+	db, err := db.InitDB()
+	if err != nil {
+		log.Fatal("DB connection failed:", err)
+	}
+
+	go initGinServer(db)
+	initMQTTServer(db)
 }
 
-func initGinServer() {
+func initGinServer(db *gorm.DB) {
 	r := gin.Default()
 
-	api.SetupRoutes(r)
+	api.SetupRoutes(r, db)
 
 	log.Println("HTTP server running on :8080")
 	r.Run("0.0.0.0:8080")
-
 }
 
-func initMQTTServer() {
+func initMQTTServer(db *gorm.DB) {
+	mqtt := &mqtt.MQTT{DB: db}
 
 	// Start the MQTT broker in a separate goroutine.
 	go mqtt.StartServer()
@@ -34,5 +41,4 @@ func initMQTTServer() {
 
 	// Start the MQTT subscriber (client) that will read messages from our broker.
 	mqtt.StartSubscriber()
-
 }
