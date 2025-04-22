@@ -1,4 +1,4 @@
-# ☀️ SolarNest
+# ☀️ Solarnest
 
 **SolarNest** is an open-source solar panel production and battery monitoring system built for Raspberry Pi, written in Go, with a React dashboard frontend.
 
