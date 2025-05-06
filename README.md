@@ -1,4 +1,6 @@
-![Header Image](.github/images/solarnest.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/nick92/solarnest/main/.github/images/solarnest.png" alt="Solarnest Logo">
+</p>
 
 **SolarNest** is an open-source solar panel production and battery monitoring system built for Raspberry Pi, written in Go, with a React dashboard frontend.
 
