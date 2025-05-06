@@ -1,4 +1,4 @@
-# ☀️ Solarnest
+![Header Image](.github/images/solarnest.png)
 
 **SolarNest** is an open-source solar panel production and battery monitoring system built for Raspberry Pi, written in Go, with a React dashboard frontend.
 
@@ -14,7 +14,6 @@
 - Frontend: React + Vite
 - Hardware: INA219, Victron VE.Direct (in progress)
 - Raspberry Pi ready (Zero W, 3, 4)
-
 
 ## 🚀 Getting Started (Raspberry Pi Setup)
 
